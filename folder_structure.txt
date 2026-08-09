@@ -1,0 +1,636 @@
+nhpms/
+│
+├── README.md
+├── LICENSE
+├── .gitignore
+├── .env.example
+├── docker-compose.yml
+├── docker-compose.dev.yml
+├── docker-compose.test.yml
+│
+├── backend/
+│   │
+│   ├── pom.xml
+│   │
+│   ├── api-gateway/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/gateway/
+│   │       │   │   ├── GatewayApplication.java
+│   │       │   │   ├── config/
+│   │       │   │   ├── security/
+│   │       │   │   ├── filters/
+│   │       │   │   ├── routes/
+│   │       │   │   └── exception/
+│   │       │   │
+│   │       │   └── resources/
+│   │       │       ├── application.yml
+│   │       │       └── application-dev.yml
+│   │       │
+│   │       └── test/
+│   │           └── java/com/nhpms/gateway/
+│   │
+│   ├── identity-service/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/identity/
+│   │       │   │
+│   │       │   │   ├── IdentityApplication.java
+│   │       │   │   │
+│   │       │   │   ├── config/
+│   │       │   │   │   ├── SecurityConfig.java
+│   │       │   │   │   ├── JwtConfig.java
+│   │       │   │   │   └── OpenApiConfig.java
+│   │       │   │   │
+│   │       │   │   ├── controller/
+│   │       │   │   │   ├── AuthController.java
+│   │       │   │   │   ├── UserController.java
+│   │       │   │   │   ├── RoleController.java
+│   │       │   │   │   └── PermissionController.java
+│   │       │   │   │
+│   │       │   │   ├── service/
+│   │       │   │   │   ├── AuthService.java
+│   │       │   │   │   ├── UserService.java
+│   │       │   │   │   ├── RoleService.java
+│   │       │   │   │   └── TokenService.java
+│   │       │   │   │
+│   │       │   │   ├── repository/
+│   │       │   │   │   ├── UserRepository.java
+│   │       │   │   │   ├── RoleRepository.java
+│   │       │   │   │   └── PermissionRepository.java
+│   │       │   │   │
+│   │       │   │   ├── entity/
+│   │       │   │   │   ├── User.java
+│   │       │   │   │   ├── Role.java
+│   │       │   │   │   ├── Permission.java
+│   │       │   │   │   └── RefreshToken.java
+│   │       │   │   │
+│   │       │   │   ├── dto/
+│   │       │   │   │   ├── LoginRequest.java
+│   │       │   │   │   ├── LoginResponse.java
+│   │       │   │   │   ├── CreateUserRequest.java
+│   │       │   │   │   └── UserResponse.java
+│   │       │   │   │
+│   │       │   │   ├── security/
+│   │       │   │   │   ├── JwtAuthenticationFilter.java
+│   │       │   │   │   ├── JwtTokenProvider.java
+│   │       │   │   │   └── CustomUserDetailsService.java
+│   │       │   │   │
+│   │       │   │   ├── exception/
+│   │       │   │   │   ├── GlobalExceptionHandler.java
+│   │       │   │   │   └── UserNotFoundException.java
+│   │       │   │   │
+│   │       │   │   └── audit/
+│   │       │   │       ├── AuditService.java
+│   │       │   │       └── AuditEvent.java
+│   │       │   │
+│   │       │   └── resources/
+│   │       │       ├── application.yml
+│   │       │       └── db/migration/
+│   │       │           ├── V1__create_users.sql
+│   │       │           ├── V2__create_roles.sql
+│   │       │           └── V3__create_permissions.sql
+│   │       │
+│   │       └── test/
+│   │
+│   ├── patient-service/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/patient/
+│   │       │   │
+│   │       │   │   ├── PatientApplication.java
+│   │       │   │   │
+│   │       │   │   ├── config/
+│   │       │   │   ├── controller/
+│   │       │   │   │   ├── PatientController.java
+│   │       │   │   │   ├── PatientSearchController.java
+│   │       │   │   │   └── BiometricController.java
+│   │       │   │   │
+│   │       │   │   ├── service/
+│   │       │   │   │   ├── PatientService.java
+│   │       │   │   │   ├── PatientSearchService.java
+│   │       │   │   │   └── BiometricService.java
+│   │       │   │   │
+│   │       │   │   ├── repository/
+│   │       │   │   │   ├── PatientRepository.java
+│   │       │   │   │   ├── BiometricRepository.java
+│   │       │   │   │   └── EmergencyContactRepository.java
+│   │       │   │   │
+│   │       │   │   ├── entity/
+│   │       │   │   │   ├── Patient.java
+│   │       │   │   │   ├── PatientBiometric.java
+│   │       │   │   │   ├── PatientIdentifier.java
+│   │       │   │   │   └── EmergencyContact.java
+│   │       │   │   │
+│   │       │   │   ├── dto/
+│   │       │   │   │   ├── CreatePatientRequest.java
+│   │       │   │   │   ├── PatientResponse.java
+│   │       │   │   │   └── PatientSearchResponse.java
+│   │       │   │   │
+│   │       │   │   ├── biometric/
+│   │       │   │   │   ├── FacialRecognitionProvider.java
+│   │       │   │   │   ├── CompreFaceProvider.java
+│   │       │   │   │   └── BiometricMapper.java
+│   │       │   │   │
+│   │       │   │   ├── event/
+│   │       │   │   │   ├── PatientCreatedEvent.java
+│   │       │   │   │   └── PatientUpdatedEvent.java
+│   │       │   │   │
+│   │       │   │   └── exception/
+│   │       │   │
+│   │       │   └── resources/
+│   │       │       ├── application.yml
+│   │       │       └── db/migration/
+│   │       │           ├── V1__create_patients.sql
+│   │       │           ├── V2__create_identifiers.sql
+│   │       │           └── V3__create_biometrics.sql
+│   │       │
+│   │       └── test/
+│   │
+│   ├── hospital-service/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/hospital/
+│   │       │   │   ├── HospitalApplication.java
+│   │       │   │   ├── config/
+│   │       │   │   ├── controller/
+│   │       │   │   │   ├── HospitalController.java
+│   │       │   │   │   ├── ClinicController.java
+│   │       │   │   │   ├── DepartmentController.java
+│   │       │   │   │   ├── RoomController.java
+│   │       │   │   │   ├── BedController.java
+│   │       │   │   │   └── AdmissionController.java
+│   │       │   │   ├── service/
+│   │       │   │   ├── repository/
+│   │       │   │   ├── entity/
+│   │       │   │   │   ├── Hospital.java
+│   │       │   │   │   ├── Clinic.java
+│   │       │   │   │   ├── Department.java
+│   │       │   │   │   ├── Ward.java
+│   │       │   │   │   ├── Room.java
+│   │       │   │   │   ├── Bed.java
+│   │       │   │   │   └── Admission.java
+│   │       │   │   ├── dto/
+│   │       │   │   ├── event/
+│   │       │   │   └── exception/
+│   │       │   └── resources/
+│   │       │       ├── application.yml
+│   │       │       └── db/migration/
+│   │       │
+│   │       └── test/
+│   │
+│   ├── clinical-service/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/clinical/
+│   │       │   │   ├── ClinicalApplication.java
+│   │       │   │   ├── config/
+│   │       │   │   ├── controller/
+│   │       │   │   │   ├── ConsultationController.java
+│   │       │   │   │   ├── DiagnosisController.java
+│   │       │   │   │   ├── ClinicalNoteController.java
+│   │       │   │   │   ├── VitalSignsController.java
+│   │       │   │   │   ├── LaboratoryController.java
+│   │       │   │   │   ├── ImagingController.java
+│   │       │   │   │   └── ProcedureController.java
+│   │       │   │   ├── service/
+│   │       │   │   ├── repository/
+│   │       │   │   ├── entity/
+│   │       │   │   │   ├── Consultation.java
+│   │       │   │   │   ├── Diagnosis.java
+│   │       │   │   │   ├── ClinicalNote.java
+│   │       │   │   │   ├── VitalSigns.java
+│   │       │   │   │   ├── LaboratoryRequest.java
+│   │       │   │   │   ├── ImagingRequest.java
+│   │       │   │   │   └── Procedure.java
+│   │       │   │   ├── dto/
+│   │       │   │   ├── event/
+│   │       │   │   └── exception/
+│   │       │   └── resources/
+│   │       │       ├── application.yml
+│   │       │       └── db/migration/
+│   │       │
+│   │       └── test/
+│   │
+│   ├── pharmacy-service/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/pharmacy/
+│   │       │   │   ├── PharmacyApplication.java
+│   │       │   │   ├── config/
+│   │       │   │   ├── controller/
+│   │       │   │   │   ├── PrescriptionController.java
+│   │       │   │   │   ├── MedicationController.java
+│   │       │   │   │   └── DispensingController.java
+│   │       │   │   ├── service/
+│   │       │   │   ├── repository/
+│   │       │   │   ├── entity/
+│   │       │   │   │   ├── Prescription.java
+│   │       │   │   │   ├── PrescriptionItem.java
+│   │       │   │   │   ├── Medication.java
+│   │       │   │   │   └── Dispensing.java
+│   │       │   │   ├── dto/
+│   │       │   │   ├── qr/
+│   │       │   │   │   └── QrCodeService.java
+│   │       │   │   └── exception/
+│   │       │   └── resources/
+│   │       │       ├── application.yml
+│   │       │       └── db/migration/
+│   │       │
+│   │       └── test/
+│   │
+│   ├── transfer-service/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/transfer/
+│   │       │   │   ├── TransferApplication.java
+│   │       │   │   ├── controller/
+│   │       │   │   ├── service/
+│   │       │   │   ├── repository/
+│   │       │   │   ├── entity/
+│   │       │   │   │   ├── PatientTransfer.java
+│   │       │   │   │   ├── TransferRequest.java
+│   │       │   │   │   └── TransferApproval.java
+│   │       │   │   ├── dto/
+│   │       │   │   └── event/
+│   │       │   └── resources/
+│   │       │       ├── application.yml
+│   │       │       └── db/migration/
+│   │       └── test/
+│   │
+│   ├── notification-service/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/notification/
+│   │       │   │   ├── NotificationApplication.java
+│   │       │   │   ├── controller/
+│   │       │   │   ├── service/
+│   │       │   │   ├── provider/
+│   │       │   │   │   ├── SmsProvider.java
+│   │       │   │   │   ├── EmailProvider.java
+│   │       │   │   │   └── PushProvider.java
+│   │       │   │   ├── entity/
+│   │       │   │   └── dto/
+│   │       │   └── resources/
+│   │       │       └── application.yml
+│   │       └── test/
+│   │
+│   ├── reporting-service/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/reporting/
+│   │       │   │   ├── ReportingApplication.java
+│   │       │   │   ├── controller/
+│   │       │   │   ├── service/
+│   │       │   │   ├── analytics/
+│   │       │   │   ├── report/
+│   │       │   │   │   ├── PdfReportGenerator.java
+│   │       │   │   │   ├── ExcelReportGenerator.java
+│   │       │   │   │   └── CsvReportGenerator.java
+│   │       │   │   └── dto/
+│   │       │   └── resources/
+│   │       │       └── application.yml
+│   │       └── test/
+│   │
+│   ├── file-service/
+│   │   ├── pom.xml
+│   │   └── src/
+│   │       ├── main/
+│   │       │   ├── java/com/nhpms/file/
+│   │       │   │   ├── FileApplication.java
+│   │       │   │   ├── controller/
+│   │       │   │   ├── service/
+│   │       │   │   ├── storage/
+│   │       │   │   │   ├── StorageProvider.java
+│   │       │   │   │   └── MinioStorageProvider.java
+│   │       │   │   ├── entity/
+│   │       │   │   └── dto/
+│   │       │   └── resources/
+│   │       │       └── application.yml
+│   │       └── test/
+│   │
+│   └── integration-service/
+│       ├── pom.xml
+│       └── src/
+│           ├── main/
+│           │   ├── java/com/nhpms/integration/
+│           │   │   ├── IntegrationApplication.java
+│           │   │   ├── controller/
+│           │   │   ├── client/
+│           │   │   │   ├── FacialRecognitionClient.java
+│           │   │   │   ├── LaboratoryClient.java
+│           │   │   │   └── RadiologyClient.java
+│           │   │   ├── adapter/
+│           │   │   ├── service/
+│           │   │   └── dto/
+│           │   └── resources/
+│           │       └── application.yml
+│           └── test/
+│
+├── frontend/
+│   │
+│   ├── admin-portal/
+│   │   ├── package.json
+│   │   ├── tsconfig.json
+│   │   ├── vite.config.ts
+│   │   ├── public/
+│   │   │   ├── logo.svg
+│   │   │   └── favicon.ico
+│   │   │
+│   │   └── src/
+│   │       ├── main.tsx
+│   │       ├── App.tsx
+│   │       │
+│   │       ├── api/
+│   │       │   ├── axios.ts
+│   │       │   ├── authApi.ts
+│   │       │   ├── patientApi.ts
+│   │       │   ├── hospitalApi.ts
+│   │       │   ├── clinicalApi.ts
+│   │       │   └── pharmacyApi.ts
+│   │       │
+│   │       ├── assets/
+│   │       │   ├── images/
+│   │       │   ├── icons/
+│   │       │   └── fonts/
+│   │       │
+│   │       ├── components/
+│   │       │   ├── common/
+│   │       │   ├── forms/
+│   │       │   ├── tables/
+│   │       │   ├── charts/
+│   │       │   ├── dialogs/
+│   │       │   └── biometric/
+│   │       │       ├── FaceCapture.tsx
+│   │       │       ├── FaceScanner.tsx
+│   │       │       └── FaceMatchResult.tsx
+│   │       │
+│   │       ├── layouts/
+│   │       │   ├── MainLayout.tsx
+│   │       │   ├── AuthLayout.tsx
+│   │       │   └── DashboardLayout.tsx
+│   │       │
+│   │       ├── pages/
+│   │       │   ├── auth/
+│   │       │   │   ├── Login.tsx
+│   │       │   │   └── ForgotPassword.tsx
+│   │       │   │
+│   │       │   ├── dashboard/
+│   │       │   │   ├── NationalDashboard.tsx
+│   │       │   │   ├── HospitalDashboard.tsx
+│   │       │   │   ├── ClinicDashboard.tsx
+│   │       │   │   ├── PharmacyDashboard.tsx
+│   │       │   │   └── ReceptionDashboard.tsx
+│   │       │   │
+│   │       │   ├── patients/
+│   │       │   │   ├── PatientList.tsx
+│   │       │   │   ├── PatientRegistration.tsx
+│   │       │   │   ├── PatientProfile.tsx
+│   │       │   │   ├── PatientHistory.tsx
+│   │       │   │   └── PatientIdentification.tsx
+│   │       │   │
+│   │       │   ├── admissions/
+│   │       │   │   ├── AdmissionList.tsx
+│   │       │   │   ├── NewAdmission.tsx
+│   │       │   │   └── BedAssignment.tsx
+│   │       │   │
+│   │       │   ├── clinical/
+│   │       │   │   ├── Consultation.tsx
+│   │       │   │   ├── Diagnosis.tsx
+│   │       │   │   ├── ClinicalNotes.tsx
+│   │       │   │   ├── VitalSigns.tsx
+│   │       │   │   ├── Laboratory.tsx
+│   │       │   │   └── Imaging.tsx
+│   │       │   │
+│   │       │   ├── pharmacy/
+│   │       │   │   ├── Prescriptions.tsx
+│   │       │   │   ├── PrescriptionDetails.tsx
+│   │       │   │   └── Dispensing.tsx
+│   │       │   │
+│   │       │   ├── transfers/
+│   │       │   │   ├── TransferList.tsx
+│   │       │   │   ├── CreateTransfer.tsx
+│   │       │   │   └── TransferDetails.tsx
+│   │       │   │
+│   │       │   ├── reports/
+│   │       │   ├── users/
+│   │       │   ├── organizations/
+│   │       │   └── settings/
+│   │       │
+│   │       ├── hooks/
+│   │       ├── contexts/
+│   │       ├── store/
+│   │       ├── routes/
+│   │       ├── types/
+│   │       ├── utils/
+│   │       ├── constants/
+│   │       ├── theme/
+│   │       └── i18n/
+│   │           ├── en/
+│   │           └── pt/
+│   │
+│   └── pharmacy-portal/
+│       └── ...
+│
+├── mobile/
+│   │
+│   └── patient-app/
+│       ├── package.json
+│       ├── app.json
+│       ├── android/
+│       ├── ios/
+│       └── src/
+│           ├── navigation/
+│           ├── screens/
+│           │   ├── auth/
+│           │   ├── home/
+│           │   ├── medical-history/
+│           │   ├── prescriptions/
+│           │   ├── laboratory/
+│           │   ├── imaging/
+│           │   ├── appointments/
+│           │   └── profile/
+│           ├── components/
+│           ├── services/
+│           ├── hooks/
+│           ├── store/
+│           ├── types/
+│           ├── utils/
+│           └── assets/
+│
+├── infrastructure/
+│   │
+│   ├── docker/
+│   │   ├── postgres/
+│   │   ├── rabbitmq/
+│   │   ├── redis/
+│   │   ├── minio/
+│   │   └── compreface/
+│   │
+│   ├── kubernetes/
+│   │   ├── namespace.yaml
+│   │   ├── configmaps/
+│   │   ├── secrets/
+│   │   ├── ingress/
+│   │   ├── gateway/
+│   │   ├── identity/
+│   │   ├── patient/
+│   │   ├── hospital/
+│   │   ├── clinical/
+│   │   ├── pharmacy/
+│   │   ├── transfer/
+│   │   ├── notification/
+│   │   ├── reporting/
+│   │   ├── file/
+│   │   └── integration/
+│   │
+│   ├── helm/
+│   │   └── nhpms/
+│   │
+│   ├── terraform/
+│   │   ├── modules/
+│   │   ├── environments/
+│   │   │   ├── dev/
+│   │   │   ├── staging/
+│   │   │   └── production/
+│   │   └── main.tf
+│   │
+│   └── monitoring/
+│       ├── prometheus/
+│       ├── grafana/
+│       │   └── dashboards/
+│       ├── loki/
+│       └── alertmanager/
+│
+├── database/
+│   │
+│   ├── development/
+│   │   ├── init.sql
+│   │   └── seed.sql
+│   │
+│   ├── test/
+│   │
+│   └── documentation/
+│       ├── erd/
+│       └── data-dictionary.md
+│
+├── messaging/
+│   │
+│   ├── exchanges/
+│   ├── queues/
+│   └── events/
+│       ├── patient-events.md
+│       ├── admission-events.md
+│       ├── clinical-events.md
+│       ├── prescription-events.md
+│       └── transfer-events.md
+│
+├── security/
+│   │
+│   ├── certificates/
+│   ├── policies/
+│   │   ├── authentication.md
+│   │   ├── authorization.md
+│   │   ├── biometric-security.md
+│   │   ├── data-protection.md
+│   │   └── audit-policy.md
+│   │
+│   └── threat-model/
+│       └── threat-model.md
+│
+├── documentation/
+│   │
+│   ├── architecture/
+│   │   ├── system-architecture.md
+│   │   ├── microservices.md
+│   │   ├── deployment-architecture.md
+│   │   ├── security-architecture.md
+│   │   └── integration-architecture.md
+│   │
+│   ├── diagrams/
+│   │   ├── system-context/
+│   │   ├── container/
+│   │   ├── microservices/
+│   │   ├── patient-flow/
+│   │   ├── pharmacy-flow/
+│   │   ├── transfer-flow/
+│   │   └── security/
+│   │
+│   ├── api/
+│   │   ├── identity-api.yaml
+│   │   ├── patient-api.yaml
+│   │   ├── hospital-api.yaml
+│   │   ├── clinical-api.yaml
+│   │   └── pharmacy-api.yaml
+│   │
+│   ├── requirements/
+│   │   ├── functional-requirements.md
+│   │   ├── non-functional-requirements.md
+│   │   └── business-rules.md
+│   │
+│   ├── user-guides/
+│   │   ├── administrator.md
+│   │   ├── doctor.md
+│   │   ├── nurse.md
+│   │   ├── receptionist.md
+│   │   └── pharmacist.md
+│   │
+│   └── development/
+│       ├── coding-standards.md
+│       ├── branching-strategy.md
+│       ├── local-development.md
+│       └── contribution-guide.md
+│
+├── tests/
+│   │
+│   ├── integration/
+│   │   ├── authentication/
+│   │   ├── patient/
+│   │   ├── hospital/
+│   │   ├── clinical/
+│   │   └── pharmacy/
+│   │
+│   ├── e2e/
+│   │   ├── patient-registration/
+│   │   ├── admission/
+│   │   ├── consultation/
+│   │   ├── prescription/
+│   │   └── transfer/
+│   │
+│   ├── performance/
+│   │   └── k6/
+│   │
+│   └── security/
+│       └── zap/
+│
+├── scripts/
+│   ├── development/
+│   │   ├── start-dev.sh
+│   │   ├── stop-dev.sh
+│   │   └── reset-database.sh
+│   │
+│   ├── deployment/
+│   │   ├── deploy-dev.sh
+│   │   ├── deploy-staging.sh
+│   │   └── deploy-production.sh
+│   │
+│   └── database/
+│       ├── backup.sh
+│       └── restore.sh
+│
+└── .github/
+    └── workflows/
+        ├── backend-ci.yml
+        ├── frontend-ci.yml
+        ├── mobile-ci.yml
+        ├── security-scan.yml
+        └── deploy.yml
