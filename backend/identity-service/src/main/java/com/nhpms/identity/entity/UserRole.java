@@ -1,0 +1,4 @@
+package com.nhpms.identity.entity;
+import jakarta.persistence.*; import java.io.Serializable; import java.util.UUID;
+@Entity @Table(name="user_roles",schema="iam") @IdClass(UserRole.Key.class)
+public class UserRole { @Id @Column(name="user_id") UUID userId; @Id @Column(name="role_id") UUID roleId; public static class Key implements Serializable { UUID userId; UUID roleId; public Key(){} public Key(UUID u,UUID r){userId=u;roleId=r;} public boolean equals(Object o){return o instanceof Key k && java.util.Objects.equals(userId,k.userId)&&java.util.Objects.equals(roleId,k.roleId);} public int hashCode(){return java.util.Objects.hash(userId,roleId);} } public UserRole(){} public UserRole(UUID u,UUID r){userId=u;roleId=r;} public UUID getUserId(){return userId;} public UUID getRoleId(){return roleId;} }

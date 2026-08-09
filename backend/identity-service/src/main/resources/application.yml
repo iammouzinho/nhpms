@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: identity-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/nhpms}
+    username: ${DB_USERNAME:nhpms}
+    password: ${DB_PASSWORD:nhpms}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: iam
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    schemas: iam
+    default-schema: iam
+    baseline-on-migrate: ${FLYWAY_BASELINE_ON_MIGRATE:false}
+    validate-on-migrate: true
+
+server:
+  port: ${SERVER_PORT:8081}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+security:
+  jwt:
+    issuer: ${JWT_ISSUER:nhpms-identity-service}
+    access-token-minutes: ${JWT_ACCESS_MINUTES:15}
+    refresh-token-days: ${JWT_REFRESH_DAYS:30}
+    secret: ${JWT_SECRET:change-this-development-secret-to-a-long-random-value}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    com.nhpms.identity: INFO
+    org.springframework.security: INFO

@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: nhpms
+      POSTGRES_USER: nhpms
+      POSTGRES_PASSWORD: nhpms
+    ports: ["5432:5432"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nhpms -d nhpms"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  identity-service:
+    build: .
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/nhpms
+      DB_USERNAME: nhpms
+      DB_PASSWORD: nhpms
+      JWT_SECRET: change-me-to-a-64-character-random-secret-before-use
+      JWT_ISSUER: nhpms-identity-service
+      NHPMS_ADMIN_USERNAME: admin
+      NHPMS_ADMIN_PASSWORD: change-this-initial-password
+    ports: ["8081:8081"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
